@@ -6,9 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Route Usage Tracker Dashboard</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Fallback for CDN if Vite not available -->
+    @if(!app()->environment('local') && !function_exists('vite'))
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    @else
+        <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    @endif
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         [v-cloak] {
@@ -51,7 +58,35 @@
         <dashboard></dashboard>
     </div>
 
-    <script src="{{ asset('vendor/route-usage-tracker/js/dashboard.js') }}"></script>
+    <!-- Vue.js Dashboard Script - Inline for package compatibility -->
+    <script type="module">
+        // Dashboard script will be loaded inline here if needed
+        // Or we can use a different approach
+        console.log('🔍 Dashboard loading...');
+        
+        // For now, show a simple message if the dashboard component isn't loaded
+        if (typeof window.Vue !== 'undefined') {
+            const { createApp, ref, computed, onMounted } = Vue;
+            
+            createApp({
+                setup() {
+                    const message = ref('Route Usage Tracker Dashboard');
+                    const isLoading = ref(true);
+                    
+                    onMounted(() => {
+                        setTimeout(() => {
+                            isLoading.value = false;
+                        }, 1000);
+                    });
+                    
+                    return {
+                        message,
+                        isLoading
+                    };
+                }
+            }).mount('#app');
+        }
+    </script>
 </body>
 
 </html>

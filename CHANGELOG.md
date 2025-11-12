@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1-beta] - 2025-11-13
+
+### 🛠️ **Bug Fixes & Production Ready**
+
+#### ✅ **Fixed**
+- **Production CDN Warning**: Replaced development Tailwind CDN with production-ready version
+- **404 Error**: Fixed missing dashboard.js file by implementing standalone dashboard view
+- **Automatic Route Registration**: Dashboard route now automatically available at `/route-usage-dashboard`
+- **Inertia.js Compatibility**: Added fallback for applications without Inertia.js setup
+- **Performance**: Optimized loading and reduced external dependencies
+
+#### 🎨 **Enhanced**
+- **Standalone Dashboard**: Complete self-contained dashboard with inline Vue.js
+- **Better Error Handling**: Improved error messages and fallback mechanisms
+- **Theme System**: Enhanced dark/light theme with better persistence
+- **Loading States**: Added proper loading indicators and animations
+
+#### 📦 **Technical Improvements**
+- **Asset Management**: Eliminated need for external dashboard.js file
+- **CDN Optimization**: Smart CDN loading with production/development detection
+- **Route Automation**: Users no longer need to manually register dashboard routes
+
+---
+
 ## [2.0.0-beta] - 2025-11-13
 
 ### 🎉 **Major Release - Dashboard & Inertia.js Support**

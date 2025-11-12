@@ -36,8 +36,8 @@ class DashboardController
             ]);
         }
 
-        // Fallback: Blade view qaytarish
-        return view('route-usage-tracker::dashboard', compact('summary', 'topRoutes', 'recentActivity'));
+        // Fallback: Standalone dashboard view
+        return view('route-usage-tracker::dashboard-standalone', compact('summary', 'topRoutes', 'recentActivity'));
     }
 
     /**
