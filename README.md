@@ -129,8 +129,11 @@ php artisan route:usage --from="2023-01-01" --to="2023-12-31"
 # Filter by HTTP method
 php artisan route:usage --method=POST
 
+# Filter by route type (web, api, admin, dashboard, auth, assets)
+php artisan route:usage --type=api
+
 # Combine all parameters
-php artisan route:usage --top=5 --method=GET --from="2024-01-01"
+php artisan route:usage --top=5 --method=GET --type=web --from="2024-01-01"
 ```
 
 #### Via Code
@@ -167,6 +170,7 @@ $routeStats = RouteUsageTracker::where('route_name', 'home')->first();
 // Use helper methods
 $topRoutes = RouteUsageTracker::getTopRoutes(10);
 $getStats = RouteUsageTracker::getRoutesByMethod('GET');
+$apiRoutes = RouteUsageTracker::getRoutesByType('api');
 $summary = RouteUsageTracker::getStatsSummary();
 ```
 
@@ -180,6 +184,7 @@ The `route_usage` table has the following columns:
 | route_name | varchar(255) | Route name |
 | route_path | varchar(500) | URL path |
 | method | varchar(10) | HTTP method |
+| route_type | varchar(50) | Route type (web, api, admin, dashboard, auth, assets) |
 | usage_count | bigint | Usage count |
 | first_used_at | timestamp | First usage timestamp |
 | last_used_at | timestamp | Last usage timestamp |

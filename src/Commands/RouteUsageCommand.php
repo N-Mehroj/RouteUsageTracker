@@ -12,7 +12,8 @@ class RouteUsageCommand extends Command
                             {--top= : Show top N routes by usage count}
                             {--from= : Start date for filtering (Y-m-d format)}
                             {--to= : End date for filtering (Y-m-d format)}
-                            {--method= : Filter by HTTP method}';
+                            {--method= : Filter by HTTP method}
+                            {--type= : Filter by route type (web, api, admin, dashboard, auth, assets)}';
 
     protected $description = 'Display route usage statistics with filtering options';
 
@@ -58,17 +59,23 @@ class RouteUsageCommand extends Command
         if ($this->option('method')) {
             $query->where('method', strtoupper($this->option('method')));
         }
+
+        // Filter by route type
+        if ($this->option('type')) {
+            $query->where('route_type', strtolower($this->option('type')));
+        }
     }
 
     private function displayResults($routes)
     {
-        $headers = ['Route Name', 'Path', 'Method', 'Usage Count', 'First Used', 'Last Used'];
+        $headers = ['Route Name', 'Path', 'Method', 'Type', 'Usage Count', 'First Used', 'Last Used'];
 
         $rows = $routes->map(function ($route) {
             return [
                 $route->route_name ?: 'N/A',
                 $route->route_path,
                 $route->method,
+                $route->route_type ?: 'web',
                 number_format($route->usage_count),
                 $route->first_used_at ? $route->first_used_at->format('Y-m-d H:i:s') : 'Never',
                 $route->last_used_at ? $route->last_used_at->format('Y-m-d H:i:s') : 'Never',

@@ -12,6 +12,7 @@ class RouteUsage extends Model
         'route_name',
         'route_path',
         'method',
+        'route_type',
         'usage_count',
         'first_used_at',
         'last_used_at'
@@ -48,6 +49,14 @@ class RouteUsage extends Model
     }
 
     /**
+     * Get routes by type (web, api, admin, etc.)
+     */
+    public static function getRoutesByType($type)
+    {
+        return static::where('route_type', $type)->orderBy('usage_count', 'desc')->get();
+    }
+
+    /**
      * Get usage statistics summary
      */
     public static function getStatsSummary()
@@ -60,7 +69,10 @@ class RouteUsage extends Model
             'total_routes' => $routes,
             'total_usage' => $total,
             'average_usage' => $average,
-            'most_used' => static::orderBy('usage_count', 'desc')->first()
+            'most_used' => static::orderBy('usage_count', 'desc')->first(),
+            'by_type' => static::selectRaw('route_type, COUNT(*) as count, SUM(usage_count) as total_usage')
+                ->groupBy('route_type')
+                ->get()
         ];
     }
 }

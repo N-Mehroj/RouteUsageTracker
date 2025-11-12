@@ -21,6 +21,7 @@ class TrackRouteUsage
             $routeName = $route->getName();
             $routePath = $route->uri();
             $method = $request->method();
+            $routeType = $this->determineRouteType($routePath, $routeName);
 
             // Skip if route or method should be ignored
             if ($this->shouldIgnore($routeName, $routePath, $method)) {
@@ -44,6 +45,7 @@ class TrackRouteUsage
                     'route_name' => $routeName,
                     'route_path' => $routePath,
                     'method' => $method,
+                    'route_type' => $routeType,
                     'usage_count' => 1,
                     'first_used_at' => $now,
                     'last_used_at' => $now,
@@ -78,5 +80,46 @@ class TrackRouteUsage
         }
 
         return false;
+    }
+
+    /**
+     * Determine the route type based on path and name
+     */
+    private function determineRouteType($routePath, $routeName)
+    {
+        // API routes
+        if (str_starts_with($routePath, 'api/')) {
+            return 'api';
+        }
+
+        // Admin routes
+        if (str_starts_with($routePath, 'admin/') || 
+            ($routeName && str_starts_with($routeName, 'admin.'))) {
+            return 'admin';
+        }
+
+        // Dashboard routes
+        if (str_starts_with($routePath, 'dashboard/') || 
+            ($routeName && str_starts_with($routeName, 'dashboard.'))) {
+            return 'dashboard';
+        }
+
+        // Authentication routes
+        if (in_array($routePath, ['login', 'register', 'logout', 'password/reset']) ||
+            ($routeName && in_array($routeName, ['login', 'register', 'logout', 'password.reset']))) {
+            return 'auth';
+        }
+
+        // Public/asset routes
+        if (str_starts_with($routePath, 'storage/') || 
+            str_starts_with($routePath, 'assets/') ||
+            str_contains($routePath, '/css/') ||
+            str_contains($routePath, '/js/') ||
+            str_contains($routePath, '/images/')) {
+            return 'assets';
+        }
+
+        // Default to web
+        return 'web';
     }
 }
