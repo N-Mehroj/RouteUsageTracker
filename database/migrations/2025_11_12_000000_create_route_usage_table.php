@@ -9,9 +9,15 @@ return new class extends Migration {
     {
         Schema::create('route_usage', function (Blueprint $table) {
             $table->id();
-            $table->string('route_name')->unique();
-            $table->unsignedBigInteger('hits')->default(0);
+            $table->string('route_name', 255);
+            $table->string('route_path', 500);
+            $table->string('method', 10);
+            $table->unsignedBigInteger('usage_count')->default(0);
+            $table->timestamp('first_used_at')->nullable();
             $table->timestamp('last_used_at')->nullable();
+            $table->timestamps();
+
+            $table->unique(['route_name', 'method']);
         });
     }
 

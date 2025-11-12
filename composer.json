@@ -2,6 +2,17 @@
   "name": "nmehroj/route-usage-tracker",
   "description": "Laravel Route Usage Tracker Package",
   "type": "library",
+  "keywords": [
+    "laravel",
+    "route",
+    "tracking",
+    "analytics",
+    "statistics",
+    "usage",
+    "monitoring",
+    "middleware"
+  ],
+  "license": "MIT",
   "autoload": {
     "psr-4": {
       "NMehroj\\RouteUsageTracker\\": "src/"
@@ -11,11 +22,39 @@
     "laravel": {
       "providers": [
         "NMehroj\\RouteUsageTracker\\RouteUsageTrackerServiceProvider"
-      ]
+      ],
+      "aliases": {
+        "RouteUsageTracker": "NMehroj\\RouteUsageTracker\\Facades\\RouteUsageTracker"
+      }
+    },
+    "branch-alias": {
+      "dev-main": "1.0-dev"
     }
   },
   "require": {
     "php": ">=8.1",
-    "illuminate/support": "^10.0|^11.0"
-  }
+    "illuminate/support": "^10.0|^11.0",
+    "illuminate/console": "^10.0|^11.0",
+    "illuminate/database": "^10.0|^11.0",
+    "illuminate/http": "^10.0|^11.0",
+    "illuminate/contracts": "^10.0|^11.0"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^8.0|^9.0",
+    "phpunit/phpunit": "^10.0"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "NMehroj\\RouteUsageTracker\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "post-autoload-dump": [
+      "@php artisan migrate --force"
+    ],
+    "test": "phpunit",
+    "test-coverage": "phpunit --coverage-html coverage"
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
 }
