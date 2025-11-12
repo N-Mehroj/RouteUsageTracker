@@ -1,0 +1,21 @@
+{
+  "name": "nmehroj/route-usage-tracker",
+  "description": "Laravel Route Usage Tracker Package",
+  "type": "library",
+  "autoload": {
+    "psr-4": {
+      "NMehroj\\RouteUsageTracker\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "NMehroj\\RouteUsageTracker\\RouteUsageTrackerServiceProvider"
+      ]
+    }
+  },
+  "require": {
+    "php": ">=8.1",
+    "illuminate/support": "^10.0|^11.0"
+  }
+}
