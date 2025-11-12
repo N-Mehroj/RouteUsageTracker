@@ -18,7 +18,8 @@ class TrackRouteUsage
         }
 
         if ($route = $request->route()) {
-            $routeName = $route->getName();
+            // Prefer named route when available, otherwise fall back to the route URI
+            $routeName = $route->getName() ?: $route->uri();
             $routePath = $route->uri();
             $method = $request->method();
             $routeType = $this->determineRouteType($routePath, $routeName);
