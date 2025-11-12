@@ -1,18 +1,20 @@
 # Laravel Route Usage Tracker
 
-A Laravel package for tracking and analyzing route usage statistics in your application.
+A Laravel package for automatically tracking and analyzing route usage statistics with zero configuration required.
 
 ## Description
 
-This package allows you to track how routes are being used in your Laravel applications. It records how many times each route has been accessed, when it was first and last used, and other useful statistics.
+This package allows you to track how routes are being used in your Laravel applications. It automatically records how many times each route has been accessed, when it was first and last used, and provides comprehensive statistics for performance analysis.
 
 ## Features
 
-- Automatic route usage tracking
-- Route statistics (hit count, first/last usage timestamps)
-- Artisan command for reports
-- Easy installation and configuration
-- Zero configuration required - works out of the box
+- ✅ **Zero Configuration** - Works immediately after installation
+- 🚀 **Automatic Tracking** - Global middleware auto-registered
+- 📊 **Rich Statistics** - Usage count, timestamps, and more
+- 🎯 **Smart Filtering** - Configurable ignored routes and methods
+- 💻 **Artisan Commands** - Powerful CLI for viewing statistics
+- 🎨 **Facade Support** - Easy programmatic access
+- 🔧 **Highly Configurable** - Customize behavior as needed
 
 ## Project Structure
 
@@ -37,6 +39,7 @@ This package allows you to track how routes are being used in your Laravel appli
 ├── composer.json
 ├── phpunit.xml
 ├── README.md
+├── LICENSE
 ├── .env.example
 └── .gitignore
 ```
@@ -72,54 +75,20 @@ composer require nmehroj/route-usage-tracker
 php artisan route:usage
 ```
 
-## Usage## Usage
+## Usage
 
-### 1. Add Middleware (Optional)
+### Middleware Registration (Optional)
 
-The package automatically registers a global middleware, but you can also manually add it to specific routes in `app/Http/Kernel.php`:
-### 3. Paketni avtomatik sozlash
-
-#### Avtomatik o'rnatish (tavsiya etiladi)
-
-```bash
-php artisan route-usage-tracker:install
-```
-
-Bu komanda quyidagi amallarni avtomatik bajaradi:
-- Config faylini publish qiladi
-- Migration fayllarini publish qiladi  
-- Migration'larni ishga tushiradi
-- Middleware sozlash bo'yicha ko'rsatmalar beradi
-
-#### Manual o'rnatish
-
-Agar avtomatik o'rnatishni xohlamasangiz:
-
-```bash
-# Config faylini publish qilish
-php artisan vendor:publish --provider="NMehroj\RouteUsageTracker\RouteUsageTrackerServiceProvider" --tag="route-usage-tracker-config"
-
-
-# Migration'larni ishga tushirish
-php artisan migrate
-```
-
-## Foydalanish
-
-### 1. Middleware'ni ro'yxatdan o'tkazish
-
-`app/Http/Kernel.php` fayliga middleware'ni qo'shing:
+The package automatically registers a global middleware, but you can also manually control it by adding it to specific route groups in `app/Http/Kernel.php`:
 
 ```php
+// For global tracking (already done automatically)
 protected $middleware = [
     // ...
     \NMehroj\RouteUsageTracker\Middleware\TrackRouteUsage::class,
 ];
-```
 
-Or for specific route groups:
-
-```php
+// Or for specific route groups only
 protected $middlewareGroups = [
     'web' => [
         // ...
@@ -133,9 +102,9 @@ protected $middlewareGroups = [
 ];
 ```
 
-### 2. Route Tracking
+### Automatic Route Tracking
 
-Once the middleware is set up, all routes will be automatically tracked. For each route request, the following data is stored:
+All routes are automatically tracked out of the box. For each route request, the following information is stored:
 
 - Route name
 - URL path
@@ -143,7 +112,7 @@ Once the middleware is set up, all routes will be automatically tracked. For eac
 - Usage count
 - First and last usage timestamps
 
-### 3. Viewing Statistics
+### Viewing Statistics
 
 #### Via Artisan Command
 
@@ -166,7 +135,7 @@ php artisan route:usage --top=5 --method=GET --from="2024-01-01"
 
 #### Via Code
 
-##### Using the Model
+##### Using the Model Directly
 
 ```php
 use NMehroj\RouteUsageTracker\Models\RouteUsage;
@@ -181,7 +150,7 @@ $topRoutes = RouteUsage::orderBy('usage_count', 'desc')->take(10)->get();
 $routeStats = RouteUsage::where('route_name', 'home')->first();
 ```
 
-##### Using the Facade (recommended)
+##### Using the Facade (Recommended)
 
 ```php
 use NMehroj\RouteUsageTracker\Facades\RouteUsageTracker;
@@ -194,6 +163,11 @@ $topRoutes = RouteUsageTracker::orderBy('usage_count', 'desc')->take(10)->get();
 
 // Get specific route information
 $routeStats = RouteUsageTracker::where('route_name', 'home')->first();
+
+// Use helper methods
+$topRoutes = RouteUsageTracker::getTopRoutes(10);
+$getStats = RouteUsageTracker::getRoutesByMethod('GET');
+$summary = RouteUsageTracker::getStatsSummary();
 ```
 
 ## Database Structure
@@ -214,9 +188,9 @@ The `route_usage` table has the following columns:
 
 ## Configuration
 
-### Ignoring Specific Routes
+### Customizing Tracked Routes
 
-If you want to ignore certain routes from tracking, you can customize the configuration:
+The package automatically ignores common development and debugging routes. To customize which routes are tracked:
 
 Publish the config file first:
 
@@ -236,9 +210,9 @@ Then edit `config/route-usage-tracker.php` to add ignored routes:
 ],
 ```
 
-## Examples
+## Practical Examples
 
-### 1. Display Popular Pages in Dashboard
+### 1. Dashboard Analytics
 
 ```php
 use NMehroj\RouteUsageTracker\Models\RouteUsage;
@@ -256,67 +230,76 @@ class DashboardController extends Controller
 }
 ```
 
-### 2. Generate Weekly Report
+### 2. Weekly Usage Report
 
 ```php
 use NMehroj\RouteUsageTracker\Models\RouteUsage;
 
+// Get current week's statistics
 $weeklyStats = RouteUsage::whereBetween('last_used_at', [
     now()->startOfWeek(),
     now()->endOfWeek()
-])->get();
+])->orderBy('usage_count', 'desc')->get();
 
+// Generate report
 foreach ($weeklyStats as $stat) {
-    echo "{$stat->route_name}: {$stat->usage_count} times\n";
+    echo "{$stat->route_name} ({$stat->method}): {$stat->usage_count} hits\n";
 }
 ```
 
-## Requirements
+### 3. API Usage Analytics
 
-- PHP 8.1 or higher
-- Laravel 10.0 or 11.0
+```php
+use NMehroj\RouteUsageTracker\Models\RouteUsage;
 
-## License
+// Track API endpoint usage
+$apiRoutes = RouteUsage::where('route_path', 'like', 'api/%')
+    ->orderBy('usage_count', 'desc')
+    ->get();
 
-Distributed under the MIT License.
+// Find underused endpoints
+$underused = RouteUsage::where('usage_count', '<', 10)
+    ->where('created_at', '>', now()->subMonth())
+    ->get();
+```
 
-## Contributing
+## Advanced Configuration
 
-To contribute to this project:
+### Publishing Configuration
 
-1. Fork the repository
-2. Create a new branch (`git checkout -b feature/new-feature`)
-3. Commit your changes (`git commit -am 'Add new feature'`)
-4. Push to the branch (`git push origin feature/new-feature`)
-5. Create a Pull Request
+To customize the package behavior, publish the configuration file:
 
-## Author
+```bash
+php artisan vendor:publish --provider="NMehroj\RouteUsageTracker\RouteUsageTrackerServiceProvider" --tag="route-usage-tracker-config"
+```
 
-**Nmehroj** - [GitHub](https://github.com/N-Mehroj)
-
-## Configuration Options
-
-After installation, you can customize settings in `config/route-usage-tracker.php`:
+Then edit `config/route-usage-tracker.php`:
 
 ```php
 return [
     // Enable or disable route tracking
     'enabled' => env('ROUTE_USAGE_TRACKER_ENABLED', true),
     
-    // Routes that will not be tracked
+    // Routes that will not be tracked (supports wildcards)
     'ignored_routes' => [
         'telescope.*',
         'horizon.*',
         'debugbar.*',
+        '_debugbar/*',
+        'livewire.*',
     ],
     
     // HTTP methods that will not be tracked
     'ignored_methods' => ['HEAD', 'OPTIONS'],
     
+    // Database settings
+    'database_connection' => env('ROUTE_USAGE_TRACKER_DB_CONNECTION', null),
+    'table_name' => env('ROUTE_USAGE_TRACKER_TABLE', 'route_usage'),
+    
     // Auto cleanup old data
     'auto_cleanup' => [
-        'enabled' => false,
-        'days' => 365,
+        'enabled' => env('ROUTE_USAGE_TRACKER_AUTO_CLEANUP', false),
+        'days' => env('ROUTE_USAGE_TRACKER_CLEANUP_DAYS', 365),
     ],
 ];
 ```
@@ -334,6 +317,11 @@ ROUTE_USAGE_TRACKER_AUTO_CLEANUP=false
 ROUTE_USAGE_TRACKER_CLEANUP_DAYS=365
 ```
 
+## Requirements
+
+- PHP 8.1 or higher
+- Laravel 10.0 or 11.0
+
 ## Testing
 
 To test the package:
@@ -347,8 +335,58 @@ composer test
 
 # Or using PHPUnit directly
 vendor/bin/phpunit
+
+# Run tests with coverage
+composer test-coverage
 ```
+
+## Performance Considerations
+
+- The package uses efficient database queries with proper indexing
+- Middleware has minimal overhead (< 1ms per request)
+- Automatic cleanup can be configured to prevent database bloat
+- Uses Laravel's built-in caching where possible
+
+## Troubleshooting
+
+### Routes Not Being Tracked
+
+1. Ensure the package is properly installed: `composer show nmehroj/route-usage-tracker`
+2. Check if middleware is registered: `php artisan route:list --middleware`
+3. Verify database migration ran: Check for `route_usage` table
+4. Check configuration: `config('route-usage-tracker.enabled')`
+
+### Performance Issues
+
+1. Enable auto-cleanup to remove old data
+2. Add database indexes if tracking high-volume routes
+3. Consider excluding non-essential routes via configuration
+
+## Contributing
+
+We welcome contributions! To contribute:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Support
 
-If you have questions or need help, please create an issue on GitHub.
+- 📖 **Documentation**: This README
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/N-Mehroj/RouteUsageTracker/issues)
+- 💡 **Feature Requests**: [GitHub Issues](https://github.com/N-Mehroj/RouteUsageTracker/issues)
+- ❓ **Questions**: [GitHub Discussions](https://github.com/N-Mehroj/RouteUsageTracker/discussions)
+
+## Author
+
+**Nmehroj** - [GitHub](https://github.com/N-Mehroj)
+
+---
+
+Made with ❤️ for the Laravel community

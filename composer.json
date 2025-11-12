@@ -1,6 +1,6 @@
 {
   "name": "nmehroj/route-usage-tracker",
-  "description": "Laravel Route Usage Tracker Package",
+  "description": "A Laravel package for automatically tracking and analyzing route usage statistics with zero configuration.",
   "type": "library",
   "keywords": [
     "laravel",
@@ -13,6 +13,19 @@
     "middleware"
   ],
   "license": "MIT",
+  "authors": [
+    {
+      "name": "Nmehroj",
+      "email": "nmehroj@example.com",
+      "homepage": "https://github.com/N-Mehroj",
+      "role": "Developer"
+    }
+  ],
+  "homepage": "https://github.com/N-Mehroj/RouteUsageTracker",
+  "support": {
+    "issues": "https://github.com/N-Mehroj/RouteUsageTracker/issues",
+    "source": "https://github.com/N-Mehroj/RouteUsageTracker"
+  },
   "autoload": {
     "psr-4": {
       "NMehroj\\RouteUsageTracker\\": "src/"
