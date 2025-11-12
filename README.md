@@ -1,6 +1,12 @@
 # Laravel Route Usage Tracker
 
-A Laravel package for automatically tracking and analyzing route usage statistics with zero configuration required.
+[![Latest Version](https://img.shields.io/badge/version-2.0.0--beta-orange)](https://github.com/N-Mehroj/RouteUsageTracker)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Laravel](https://img.shields.io/badge/Laravel-9%2B-red.svg)](https://laravel.com)
+[![Vue.js](https://img.shields.io/badge/Vue.js-3-green.svg)](https://vuejs.org)
+[![Inertia.js](https://img.shields.io/badge/Inertia.js-Supported-purple.svg)](https://inertiajs.com)
+
+A Laravel package for automatically tracking and analyzing route usage statistics with a beautiful Vue.js 3 dashboard and Inertia.js support.
 
 ## Description
 
@@ -8,41 +14,30 @@ This package allows you to track how routes are being used in your Laravel appli
 
 ## Features
 
+### 🎯 **Core Tracking Features**
 - ✅ **Zero Configuration** - Works immediately after installation
 - 🚀 **Automatic Tracking** - Global middleware auto-registered
-- 📊 **Rich Statistics** - Usage count, timestamps, and more
+- 📊 **Rich Statistics** - Usage count, timestamps, route types and more
 - 🎯 **Smart Filtering** - Configurable ignored routes and methods
 - 💻 **Artisan Commands** - Powerful CLI for viewing statistics
 - 🎨 **Facade Support** - Easy programmatic access
-- 🔧 **Highly Configurable** - Customize behavior as needed
 
-## Project Structure
+### 🎨 **Dashboard Features (Beta)**
+- 📱 **Vue.js 3 Dashboard** - Modern, reactive user interface
+- ⚡ **Inertia.js Support** - Seamless SPA experience
+- 🌙 **Dark/Light Theme** - Automatic theme switching
+- 📈 **Interactive Charts** - Beautiful Chart.js visualizations
+- 🔍 **Advanced Filtering** - Real-time search and filters
+- 💾 **CSV Export** - Export usage data for analysis
+- 📊 **Real-time Updates** - Live statistics and charts
+- 🎛️ **One Command Setup** - Install everything with single command
 
-```
-├── src/
-│   ├── Commands/
-│   │   └── RouteUsageCommand.php
-│   ├── Facades/
-│   │   └── RouteUsageTracker.php
-│   ├── Middleware/
-│   │   └── TrackRouteUsage.php
-│   ├── Models/
-│   │   └── RouteUsage.php
-│   └── RouteUsageTrackerServiceProvider.php
-├── config/
-│   └── route-usage-tracker.php
-├── database/
-│   └── migrations/
-│       └── 2025_11_12_000000_create_route_usage_table.php
-├── tests/
-│   └── TrackRouteUsageTest.php
-├── composer.json
-├── phpunit.xml
-├── README.md
-├── LICENSE
-├── .env.example
-└── .gitignore
-```
+### 🔧 **Technical Features**
+- 🏷️ **Route Type Detection** - Automatically categorizes routes (web, api, admin, etc.)
+- � **Performance Optimized** - Minimal overhead on requests
+- �🔧 **Highly Configurable** - Customize behavior as needed
+- 🛡️ **Laravel 9+ Compatible** - Works with latest Laravel versions
+
 
 ## Installation
 
@@ -172,6 +167,169 @@ $topRoutes = RouteUsageTracker::getTopRoutes(10);
 $getStats = RouteUsageTracker::getRoutesByMethod('GET');
 $apiRoutes = RouteUsageTracker::getRoutesByType('api');
 $summary = RouteUsageTracker::getStatsSummary();
+```
+
+## Dashboard with Inertia.js & Vue.js
+
+The package includes a modern, reactive Vue.js 3 dashboard built with Inertia.js for visualizing route usage statistics, similar to Laravel Nightwatch.
+
+### Inertia.js Dashboard Installation
+
+#### 🚀 One-Command Setup (Recommended)
+
+```bash
+php artisan route-usage-tracker:setup
+```
+
+This single command will:
+- ✅ Run database migrations
+- ✅ Install all required NPM packages (Vue.js 3, Inertia.js, Chart.js, Heroicons, VueUse)
+- ✅ Publish dashboard assets
+- ✅ Create example configuration files (vite.config.js, app.js)
+- ✅ Display next steps
+
+**Available Options:**
+```bash
+# Skip NPM package installation
+php artisan route-usage-tracker:setup --skip-npm
+
+# Skip database migrations
+php artisan route-usage-tracker:setup --skip-migration
+
+# Force reinstall packages
+php artisan route-usage-tracker:setup --force
+
+# Skip both NPM and migrations
+php artisan route-usage-tracker:setup --skip-npm --skip-migration
+```
+
+#### Manual Installation (Alternative)
+
+1. **Ensure Inertia.js is set up in your Laravel application:**
+
+Follow the [Inertia.js Laravel installation guide](https://inertiajs.com/server-side-setup) if not already installed.
+
+2. **Publish dashboard assets:**
+```bash
+php artisan route-usage-tracker:publish-dashboard
+```
+
+3. **Install required dependencies:**
+```bash
+npm install vue@^3.3.0 @inertiajs/vue3 chart.js @heroicons/vue @vueuse/core
+```
+
+4. **Update your `resources/js/app.js` for Inertia.js:**
+```js
+import './bootstrap'
+import '../css/app.css'
+
+import { createApp, h } from 'vue'
+import { createInertiaApp } from '@inertiajs/vue3'
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
+
+const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel'
+
+createInertiaApp({
+    title: (title) => `${title} - ${appName}`,
+    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
+    setup({ el, App, props, plugin }) {
+        return createApp({ render: () => h(App, props) })
+            .use(plugin)
+            .mount(el)
+    },
+    progress: {
+        color: '#4F46E5',
+    },
+})
+```
+
+5. **Update your `vite.config.js`:**
+```js
+import { defineConfig } from 'vite'
+import laravel from 'laravel-vite-plugin'
+import vue from '@vitejs/plugin-vue'
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: [
+                'resources/css/app.css',
+                'resources/js/app.js',
+            ],
+            refresh: true,
+        }),
+        vue({
+            template: {
+                transformAssetUrls: {
+                    base: null,
+                    includeAbsolute: false,
+                },
+            },
+        }),
+    ],
+    resolve: {
+        alias: {
+            '@': '/resources/js',
+        },
+    },
+})
+```
+
+6. **Add dashboard route to your `routes/web.php`:**
+```php
+use NMehroj\RouteUsageTracker\Controllers\DashboardController;
+
+Route::get('/route-usage-dashboard', [DashboardController::class, 'index'])->name('route-usage-tracker.dashboard');
+```
+
+7. **Build assets:**
+```bash
+npm run build
+# or for development
+npm run dev
+```
+
+### Dashboard Features
+
+- 📊 **Real-time Statistics**: Live route usage metrics and charts
+- 🎨 **Dark/Light Theme**: Automatic theme switching with system preference
+- 📈 **Interactive Charts**: Beautiful Chart.js visualizations for usage trends
+- 🔍 **Advanced Filtering**: Filter by route type, method, date range, and search
+- 📱 **Responsive Design**: Works perfectly on desktop, tablet, and mobile
+- 💾 **Export Functionality**: Export route data as CSV for further analysis
+- ⚡ **Fast & Lightweight**: Built with Vue.js 3 Composition API for optimal performance
+
+### Dashboard Usage
+
+1. **Visit the dashboard:**
+```
+http://your-app.com/route-usage-dashboard
+```
+
+2. **Available dashboard endpoints:**
+- `/route-usage-tracker/dashboard` - Main dashboard view
+- `/route-usage-tracker/api/summary` - Statistics summary
+- `/route-usage-tracker/api/routes` - Routes with filtering
+- `/route-usage-tracker/api/daily-usage` - Daily usage charts
+- `/route-usage-tracker/api/type-stats` - Route type statistics
+- `/route-usage-tracker/api/top-routes` - Most used routes
+- `/route-usage-tracker/api/recent-activity` - Recent route activity
+- `/route-usage-tracker/api/export` - Export data as CSV
+
+3. **Dashboard API parameters:**
+```javascript
+// Filter routes
+fetch('/route-usage-tracker/api/routes?type=api&method=GET&search=user&limit=50')
+
+// Get daily usage for last 7 days  
+fetch('/route-usage-tracker/api/daily-usage?days=7')
+
+// Get top 5 routes by type
+fetch('/route-usage-tracker/api/top-routes?limit=5&type=web')
+
+// Export filtered data
+fetch('/route-usage-tracker/api/export?type=api&from=2024-01-01&to=2024-12-31')
 ```
 
 ## Database Structure

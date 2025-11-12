@@ -1,6 +1,7 @@
 {
   "name": "nmehroj/route-usage-tracker",
-  "description": "Laravel Route Usage Tracker Package",
+  "description": "Laravel Route Usage Tracker Package with Vue.js 3 Dashboard and Inertia.js Support",
+  "version": "2.0.0-beta",
   "type": "library",
   "keywords": [
     "laravel",

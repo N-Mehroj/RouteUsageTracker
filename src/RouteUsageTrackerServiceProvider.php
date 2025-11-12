@@ -14,6 +14,12 @@ class RouteUsageTrackerServiceProvider extends ServiceProvider
         // Load migrations automatically
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
+        // Load routes for dashboard
+        $this->loadRoutesFrom(__DIR__ . '/routes.php');
+
+        // Load views for dashboard
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'route-usage-tracker');
+
         // Register global middleware automatically
         if (!$this->app->runningInConsole()) {
             $kernel = $this->app->make(Kernel::class);
@@ -24,12 +30,20 @@ class RouteUsageTrackerServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 RouteUsageCommand::class,
+                \NMehroj\RouteUsageTracker\Commands\PublishDashboardCommand::class,
+                \NMehroj\RouteUsageTracker\Commands\SetupDashboardCommand::class,
             ]);
 
-            // Optional: Allow publishing config for customization
+            // Publishing options
             $this->publishes([
                 __DIR__ . '/../config/route-usage-tracker.php' => config_path('route-usage-tracker.php'),
             ], 'route-usage-tracker-config');
+
+            // Publish dashboard assets
+            $this->publishes([
+                __DIR__ . '/../resources/views' => resource_path('views/vendor/route-usage-tracker'),
+                __DIR__ . '/../resources/js' => resource_path('js/vendor/route-usage-tracker'),
+            ], 'route-usage-tracker-dashboard');
         }
     }
 
