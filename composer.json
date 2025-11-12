@@ -1,6 +1,6 @@
 {
   "name": "nmehroj/route-usage-tracker",
-  "description": "A Laravel package for automatically tracking and analyzing route usage statistics with zero configuration.",
+  "description": "Laravel Route Usage Tracker Package",
   "type": "library",
   "keywords": [
     "laravel",
