@@ -1,6 +1,6 @@
 # Laravel Route Usage Tracker
 
-[![Latest Version](https://img.shields.io/badge/version-2.0.0--beta-orange)](https://github.com/N-Mehroj/RouteUsageTracker)
+[![Latest Version](https://img.shields.io/badge/version-2.0.2--beta-orange)](https://github.com/N-Mehroj/RouteUsageTracker)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Laravel](https://img.shields.io/badge/Laravel-9%2B-red.svg)](https://laravel.com)
 [![Vue.js](https://img.shields.io/badge/Vue.js-3-green.svg)](https://vuejs.org)

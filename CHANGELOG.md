@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.2-beta] - 2025-11-13
+
+### 🚀 **Minor Release - Stability Improvements**
+
+#### 🔧 **Enhanced**
+- **Dashboard Performance**: Optimized loading and rendering performance
+- **Error Handling**: Improved error messages and user feedback
+- **Code Quality**: Refined code structure and documentation
+- **Theme Persistence**: Better theme state management across sessions
+
+#### 📦 **Package Improvements**
+- **Smaller Bundle Size**: Optimized asset loading and reduced dependencies
+- **Better Compatibility**: Enhanced compatibility with different Laravel configurations
+- **Installation Flow**: Smoother installation and setup experience
+
+#### 🛠️ **Technical Updates**
+- **Asset Loading**: Improved CDN fallback mechanisms
+- **Route Registration**: More robust automatic route registration
+- **Configuration**: Better default configuration handling
+
+---
+
 ## [2.0.1-beta] - 2025-11-13
 
 ### 🛠️ **Bug Fixes & Production Ready**

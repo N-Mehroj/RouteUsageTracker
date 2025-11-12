@@ -293,7 +293,11 @@
                 // Reactive data
                 const isLoading = ref(true);
                 const isRefreshing = ref(false);
-                const isDark = ref(localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches));
+                const isDark = ref((() => {
+                    const stored = localStorage.getItem('route-tracker-theme');
+                    if (stored) return stored === 'dark';
+                    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+                })());
                 const error = ref('');
                 const routes = ref([]);
                 const stats = ref({
@@ -332,18 +336,32 @@
                 // Methods
                 const toggleTheme = () => {
                     isDark.value = !isDark.value;
-                    localStorage.setItem('theme', isDark.value ? 'dark' : 'light');
+                    localStorage.setItem('route-tracker-theme', isDark.value ? 'dark' : 'light');
                     document.documentElement.classList.toggle('dark', isDark.value);
+                    
+                    // Dispatch custom event for theme change
+                    window.dispatchEvent(new CustomEvent('themeChanged', { 
+                        detail: { theme: isDark.value ? 'dark' : 'light' } 
+                    }));
                 };
 
                 const loadData = async () => {
                     try {
                         error.value = '';
                         
-                        // Load summary stats
-                        const summaryResponse = await fetch('/route-usage-tracker/api/summary');
+                        // Parallel loading for better performance
+                        const [summaryResponse, routesResponse] = await Promise.all([
+                            fetch('/route-usage-tracker/api/summary'),
+                            fetch('/route-usage-tracker/api/routes?limit=50')
+                        ]);
+                        
                         if (!summaryResponse.ok) throw new Error('Failed to load summary data');
-                        const summaryData = await summaryResponse.json();
+                        if (!routesResponse.ok) throw new Error('Failed to load routes data');
+                        
+                        const [summaryData, routesData] = await Promise.all([
+                            summaryResponse.json(),
+                            routesResponse.json()
+                        ]);
                         
                         stats.value = {
                             totalRoutes: summaryData.total_routes || 0,
@@ -353,14 +371,11 @@
                             activeToday: summaryData.today_active_routes || 0
                         };
 
-                        // Load routes
-                        const routesResponse = await fetch('/route-usage-tracker/api/routes?limit=50');
-                        if (!routesResponse.ok) throw new Error('Failed to load routes data');
-                        routes.value = await routesResponse.json();
+                        routes.value = routesData;
 
                     } catch (err) {
                         console.error('Error loading data:', err);
-                        error.value = `Failed to load dashboard data: ${err.message}`;
+                        error.value = `Failed to load dashboard data: ${err.message}. Please check if the API endpoints are accessible.`;
                     }
                 };
 

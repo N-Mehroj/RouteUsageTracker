@@ -19,7 +19,7 @@ class SetupDashboardCommand extends Command
 
     public function handle()
     {
-        $this->info('🚀 Setting up Route Usage Tracker Dashboard...');
+        $this->info('🚀 Setting up Route Usage Tracker Dashboard v2.0.2-beta...');
         $this->newLine();
 
         // Step 1: Run migrations
