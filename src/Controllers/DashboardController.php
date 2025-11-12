@@ -4,6 +4,7 @@ namespace NMehroj\RouteUsageTracker\Controllers;
 
 use NMehroj\RouteUsageTracker\Models\RouteUsage;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class DashboardController
 {
@@ -16,21 +17,27 @@ class DashboardController
         $topRoutes = RouteUsage::orderBy('usage_count', 'desc')->limit(10)->get();
         $recentActivity = RouteUsage::orderBy('last_used_at', 'desc')->limit(10)->get();
 
-        return inertia('RouteUsageTracker/Dashboard', [
-            'summary' => $summary,
-            'topRoutes' => $topRoutes,
-            'recentActivity' => $recentActivity,
-            'apiEndpoints' => [
-                'summary' => route('route-usage-tracker.api.summary'),
-                'routes' => route('route-usage-tracker.api.routes'),
-                'dailyUsage' => route('route-usage-tracker.api.daily-usage'),
-                'typeStats' => route('route-usage-tracker.api.type-stats'),
-                'topRoutes' => route('route-usage-tracker.api.top-routes'),
-                'recentActivity' => route('route-usage-tracker.api.recent-activity'),
-                'periodStats' => route('route-usage-tracker.api.period-stats'),
-                'export' => route('route-usage-tracker.api.export'),
-            ]
-        ]);
+        // Agar Inertia o'rnatilmagan bo'lsa, oddiy view qaytaramiz
+        if (class_exists('\Inertia\Inertia')) {
+            return \Inertia\Inertia::render('RouteUsageTracker/Dashboard', [
+                'summary' => $summary,
+                'topRoutes' => $topRoutes,
+                'recentActivity' => $recentActivity,
+                'apiEndpoints' => [
+                    'summary' => '/route-usage-tracker/api/summary',
+                    'routes' => '/route-usage-tracker/api/routes',
+                    'dailyUsage' => '/route-usage-tracker/api/daily-usage',
+                    'typeStats' => '/route-usage-tracker/api/type-stats',
+                    'topRoutes' => '/route-usage-tracker/api/top-routes',
+                    'recentActivity' => '/route-usage-tracker/api/recent-activity',
+                    'periodStats' => '/route-usage-tracker/api/period-stats',
+                    'export' => '/route-usage-tracker/api/export',
+                ]
+            ]);
+        }
+        
+        // Fallback: Blade view qaytarish
+        return view('route-usage-tracker::dashboard', compact('summary', 'topRoutes', 'recentActivity'));
     }
 
     /**

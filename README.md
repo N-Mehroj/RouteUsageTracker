@@ -34,43 +34,17 @@ This package allows you to track how routes are being used in your Laravel appli
 - 📊 **Real-time Updates** - Live statistics and charts
 - 🎛️ **One Command Setup** - Install everything with single command
 
-### 🔧 **Technical Features**
-- 🏷️ **Route Type Detection** - Automatically categorizes routes (web, api, admin, etc.)
-- � **Performance Optimized** - Minimal overhead on requests
-- �🔧 **Highly Configurable** - Customize behavior as needed
-- 🛡️ **Laravel 9+ Compatible** - Works with latest Laravel versions
-
-
-## Installation
-
-### 🔥 **Beta Version Installation**
-
-To install the latest beta version with Vue.js 3 dashboard:
-
+4. **Build assets:**
 ```bash
-composer require nmehroj/route-usage-tracker:^2.0.0-beta
+npm run dev  # or npm run build
 ```
 
-### 📦 **Stable Version Installation**
-
-For the stable version (basic tracking only):
-
-```bash
-composer require nmehroj/route-usage-tracker:^1.0
+5. **Visit your dashboard (automatically available):**
+```
+http://your-app.com/route-usage-dashboard
 ```
 
-**Note:** The package will automatically register with Laravel via package discovery.
-
-### 2. Automatic Setup (Ready to Use!)
-
-🎉 **Zero Configuration Required!** The package works immediately after installation:
-
-- ✅ Database migrations run automatically
-- ✅ Global middleware is registered automatically
-- ✅ Routes are tracked automatically on every request
-- ✅ No manual setup needed
-
-That's it! Your routes are now being tracked. Use `php artisan route:usage` to see statistics.
+> **📝 Note**: The dashboard route `/route-usage-dashboard` is automatically registered by the package. No need to manually add routes!
 
 ## Quick Start Example
 
@@ -288,19 +262,14 @@ export default defineConfig({
 })
 ```
 
-6. **Add dashboard route to your `routes/web.php`:**
-```php
-use NMehroj\RouteUsageTracker\Controllers\DashboardController;
-
-Route::get('/route-usage-dashboard', [DashboardController::class, 'index'])->name('route-usage-tracker.dashboard');
-```
-
-7. **Build assets:**
+6. **Build assets:**
 ```bash
 npm run build
 # or for development
 npm run dev
 ```
+
+> **🎉 Automatic Route Registration**: The dashboard route `/route-usage-dashboard` is automatically registered by the package. No manual route configuration needed!
 
 ### Dashboard Features
 

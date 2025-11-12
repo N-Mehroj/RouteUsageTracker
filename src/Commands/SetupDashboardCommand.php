@@ -256,21 +256,21 @@ JS;
         $this->line('<fg=cyan>Next Steps:</fg=cyan>');
         $this->line('');
 
-        $this->line('1. <fg=yellow>Add route to your web.php:</fg=yellow>');
-        $this->line('   <fg=green>Route::get(\'/dashboard\', [\\NMehroj\\RouteUsageTracker\\Controllers\\DashboardController::class, \'index\']);</fg=green>');
-        $this->line('');
-
-        $this->line('2. <fg=yellow>Build assets:</fg=yellow>');
+        $this->line('1. <fg=yellow>Build assets:</fg=yellow>');
         $this->line('   <fg=green>npm run build</fg=green>  (for production)');
         $this->line('   <fg=green>npm run dev</fg=green>   (for development)');
         $this->line('');
 
-        $this->line('3. <fg=yellow>Visit your dashboard:</fg=yellow>');
-        $this->line('   <fg=green>http://your-app.com/dashboard</fg=green>');
+        $this->line('2. <fg=yellow>Visit your dashboard (automatically available):</fg=yellow>');
+        $this->line('   <fg=green>http://your-app.com/route-usage-dashboard</fg=green>');
         $this->line('');
 
-        $this->line('4. <fg=yellow>Setup Inertia.js middleware (if not already done):</fg=yellow>');
+        $this->line('3. <fg=yellow>Setup Inertia.js middleware (if not already done):</fg=yellow>');
         $this->line('   <fg=green>php artisan inertia:middleware</fg=green>');
+        $this->line('');
+        
+        $this->line('<fg=magenta>📝 Note: Dashboard route is automatically registered!</fg=magenta>');
+        $this->line('<fg=magenta>No need to manually add routes to web.php</fg=magenta>');
         $this->line('');
 
         $this->line('<fg=cyan>API Endpoints available:</fg=cyan>');
