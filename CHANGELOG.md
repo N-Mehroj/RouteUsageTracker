@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.2-beta] - 2025-11-13
+
+### 🛠️ **Bug Fixes & Improvements**
+
+#### ✨ **Fixed**
+- **Inertia.js Integration**: Fixed `Call to undefined function inertia()` error
+- **Automatic Route Registration**: Dashboard routes now automatically registered
+- **Fallback Support**: Added Blade view fallback when Inertia.js not installed
+
+#### 🔧 **Enhanced**
+- **DashboardController**: Improved error handling and class detection
+- **Service Provider**: Enhanced route loading with automatic web route registration
+- **Setup Command**: Updated instructions to reflect automatic route registration
+- **Documentation**: Updated README with automatic route registration info
+
+#### 📋 **Technical Changes**
+- Added proper Inertia facade import in DashboardController
+- Created separate web-routes.php for automatic dashboard route registration
+- Improved controller compatibility with both Inertia.js and Blade views
+- Enhanced setup command messages to reflect new automatic features
+
+---
+
+## [2.0.1-beta] - 2025-11-13
+
+### 🔧 **Minor Improvements**
+- Enhanced service provider configuration
+- Improved controller stability
+- Updated setup command functionality
+
+---
+
 ## [2.0.0-beta] - 2025-11-13
 
 ### 🎉 **Major Release - Dashboard & Inertia.js Support**
