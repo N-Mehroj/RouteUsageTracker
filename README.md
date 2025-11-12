@@ -8,6 +8,8 @@
 
 A Laravel package for automatically tracking and analyzing route usage statistics with a beautiful Vue.js 3 dashboard and Inertia.js support.
 
+> **🚨 Beta Release Notice**: Version 2.0.0-beta introduces major new features including Vue.js 3 dashboard and Inertia.js support. While stable for testing, please use with caution in production environments.
+
 ## Description
 
 This package allows you to track how routes are being used in your Laravel applications. It automatically records how many times each route has been accessed, when it was first and last used, and provides comprehensive statistics for performance analysis.
@@ -41,10 +43,20 @@ This package allows you to track how routes are being used in your Laravel appli
 
 ## Installation
 
-### 1. Install via Composer
+### 🔥 **Beta Version Installation**
+
+To install the latest beta version with Vue.js 3 dashboard:
 
 ```bash
-composer require nmehroj/route-usage-tracker
+composer require nmehroj/route-usage-tracker:^2.0.0-beta
+```
+
+### 📦 **Stable Version Installation**
+
+For the stable version (basic tracking only):
+
+```bash
+composer require nmehroj/route-usage-tracker:^1.0
 ```
 
 **Note:** The package will automatically register with Laravel via package discovery.
