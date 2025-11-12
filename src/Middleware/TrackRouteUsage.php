@@ -93,29 +93,37 @@ class TrackRouteUsage
         }
 
         // Admin routes
-        if (str_starts_with($routePath, 'admin/') || 
-            ($routeName && str_starts_with($routeName, 'admin.'))) {
+        if (
+            str_starts_with($routePath, 'admin/') ||
+            ($routeName && str_starts_with($routeName, 'admin.'))
+        ) {
             return 'admin';
         }
 
         // Dashboard routes
-        if (str_starts_with($routePath, 'dashboard/') || 
-            ($routeName && str_starts_with($routeName, 'dashboard.'))) {
+        if (
+            str_starts_with($routePath, 'dashboard/') ||
+            ($routeName && str_starts_with($routeName, 'dashboard.'))
+        ) {
             return 'dashboard';
         }
 
         // Authentication routes
-        if (in_array($routePath, ['login', 'register', 'logout', 'password/reset']) ||
-            ($routeName && in_array($routeName, ['login', 'register', 'logout', 'password.reset']))) {
+        if (
+            in_array($routePath, ['login', 'register', 'logout', 'password/reset']) ||
+            ($routeName && in_array($routeName, ['login', 'register', 'logout', 'password.reset']))
+        ) {
             return 'auth';
         }
 
         // Public/asset routes
-        if (str_starts_with($routePath, 'storage/') || 
+        if (
+            str_starts_with($routePath, 'storage/') ||
             str_starts_with($routePath, 'assets/') ||
             str_contains($routePath, '/css/') ||
             str_contains($routePath, '/js/') ||
-            str_contains($routePath, '/images/')) {
+            str_contains($routePath, '/images/')
+        ) {
             return 'assets';
         }
 
