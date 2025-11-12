@@ -268,7 +268,7 @@ JS;
         $this->line('3. <fg=yellow>Setup Inertia.js middleware (if not already done):</fg=yellow>');
         $this->line('   <fg=green>php artisan inertia:middleware</fg=green>');
         $this->line('');
-        
+
         $this->line('<fg=magenta>📝 Note: Dashboard route is automatically registered!</fg=magenta>');
         $this->line('<fg=magenta>No need to manually add routes to web.php</fg=magenta>');
         $this->line('');

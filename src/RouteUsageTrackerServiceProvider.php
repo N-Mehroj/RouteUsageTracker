@@ -16,7 +16,7 @@ class RouteUsageTrackerServiceProvider extends ServiceProvider
 
         // Load API routes for dashboard
         $this->loadRoutesFrom(__DIR__ . '/routes.php');
-        
+
         // Load web routes for dashboard (avtomatik dashboard route qo'shish)
         $this->loadRoutesFrom(__DIR__ . '/web-routes.php');
 
